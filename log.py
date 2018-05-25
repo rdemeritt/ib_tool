@@ -3,7 +3,7 @@ from rd_utilities import unix_time_now
 
 
 def build_logger():
-    logger_name = 'ib_tool'
+    logger_name = 'ibsh'
     formatter = logging.Formatter("[%(asctime)s.%(msecs)03d:%(levelname)s:%(name)s:%(filename)s(%(lineno)s)] "
                                   "%(message)s", "%Y-%m-%dT%H:%M:%S")
     _logger = logging.getLogger(logger_name)
