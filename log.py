@@ -1,5 +1,5 @@
 import logging
-from rd_utilities import unix_time_now
+from utilities import unix_time_now
 
 
 def build_logger():

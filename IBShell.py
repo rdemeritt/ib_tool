@@ -1,7 +1,7 @@
 import config
 
 import cmd2 as cmd
-import ibapi
+from ibapi.client import EClient
 
 
 class IBShell(cmd.Cmd):
@@ -22,6 +22,8 @@ class IBShell(cmd.Cmd):
 
     def complete_show(self, text, line, begidx, endidx):
         config.logger.debug(line)
+
+        # 'show orders' completion
         if line.endswith('orders '):
             completions = [f
                            for f in self.show_orders_cmds

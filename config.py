@@ -1,6 +1,6 @@
 import argparse
 import re
-from rd_utilities import unix_time_now
+from utilities import unix_time_now
 from log import build_logger, logging
 
 
