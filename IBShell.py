@@ -1,7 +1,5 @@
 import config
-
 import cmd2 as cmd
-from ibapi.client import EClient
 
 
 class IBShell(cmd.Cmd):
@@ -14,34 +12,34 @@ class IBShell(cmd.Cmd):
 
     def do_show(self, element):
         """group of 'show' commands"""
+        config.logger.debug('show %s' % element)
 
-
-        config.logger.debug("show %s" % element)
         if element and element in self.show_cmds:
             pass
 
     def complete_show(self, text, line, begidx, endidx):
-        config.logger.debug(line)
-
         # 'show orders' completion
-        if line.endswith('orders '):
-            completions = [f
-                           for f in self.show_orders_cmds
-                           if f.startswith(text)
-                           ]
+        if 'show orders' in line:
+            if line.endswith('orders '):
+                completions = [f for f in self.show_orders_cmds
+                               if f.startswith(text)]
+            else:
+                for o_cmd in self.show_orders_cmds:
+                    if line.endswith(o_cmd + ' '):
+                        return False
+                completions = [f for f in self.show_orders_cmds
+                               if f.startswith(text)]
             return completions
 
         if not text:
             completions = self.show_cmds[:]
         else:
-            completions = [f
-                           for f in self.show_cmds
-                           if f.startswith(text)
-                           ]
+            completions = [f for f in self.show_cmds
+                           if f.startswith(text)]
         return completions
 
     def do_order(self, action):
-        config.logger.debug("order %s" % action)
+        config.logger.debug('order %s' % action)
 
     def complete_order(self, text, line, begidx, endidx):
         if not text:
