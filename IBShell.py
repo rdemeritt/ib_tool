@@ -9,8 +9,9 @@ class IBShell(cmd.Cmd):
     intro = "Now go and make some R's!"
     prompt = "ibsh:> "
 
-    show_cmds = ['positions', 'orders', 'trades', 'account']
+    show_cmds = ['positions', 'orders', 'trades', 'accounts']
     show_orders_cmds = ['all', 'working', 'filled', 'canceled']
+    show_accounts_cmds = ['values', 'summary']
     order_cmds = ['add', 'del']
     trade_cmds = ['all', 'open']
 
@@ -43,9 +44,14 @@ class IBShell(cmd.Cmd):
             config.logger.debug('trades: %s' % element)
             showOpenTrades(config.session)
 
-        if 'account' in element:
+        if 'accounts' in element:
             config.logger.debug('accounts: %s' % element)
-            showAccountSummary(config.session)
+            if element.endswith('accounts'):
+                showAccountSummary(config.session)
+            if element.endswith('values'):
+                showAccountValues(config.session)
+            if element.endswith('summary'):
+                showAccountSummary(config.session)
 
     def complete_show(self, text, line, begidx, endidx):
         # 'show orders' completion
@@ -58,6 +64,18 @@ class IBShell(cmd.Cmd):
                     if line.endswith(o_cmd + ' '):
                         return False
                 completions = [f for f in self.show_orders_cmds
+                               if f.startswith(text)]
+            return completions
+
+        if 'show accounts' in line:
+            if line.endswith('accounts '):
+                completions = [f for f in self.show_accounts_cmds
+                               if f.startswith(text)]
+            else:
+                for a_cmd in self.show_accounts_cmds:
+                    if line.endswith(a_cmd + ' '):
+                        return False
+                completions = [f for f in self.show_accounts_cmds
                                if f.startswith(text)]
             return completions
 
