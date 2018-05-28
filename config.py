@@ -3,14 +3,12 @@ import re
 from utilities import unix_time_now
 from log import build_logger, logging
 from ib_insync import IB
+from IBConnector import IBConnector
 
 
 def build_arg_parser():
-    parser = argparse.ArgumentParser(
-        prog='ibsh', description='CLI tool to place and manage orders in IB')
-    # parser.add_argument('--broker', '-b', help='Which broker to connect to', required=True)
+    parser = argparse.ArgumentParser(prog='ibsh', description='CLI tool to place and manage orders in IB')
     parser.add_argument('--log_level', help='Set the logging level')
-    # parser.add_argument('--key', help='IB API key', required=True)
     return parser.parse_args()
 
 
@@ -35,9 +33,9 @@ def init():
     # else:
     #     logger.error('No key provided')
     #     exit(1)
+    ib_conn = IBConnector()
+    session = ib_conn.start_session()
 
-    session = IB().connect()
-    # check to see if our session was successfully created
     if not session:
         exit(2)
 
@@ -45,6 +43,6 @@ def init():
 # define global variables
 start_time = None
 logger = None
-log_level = logging.DEBUG
+log_level = logging.WARN
 args = None
 session = None

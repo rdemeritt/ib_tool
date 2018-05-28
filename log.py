@@ -1,5 +1,6 @@
 import logging
 from utilities import unix_time_now
+import config
 
 
 def build_logger():
@@ -18,5 +19,5 @@ def build_logger():
     ch.setLevel(logging.DEBUG)
     ch.setFormatter(formatter)
 
-    logging.basicConfig(level=logging.DEBUG, handlers=(fh, ch))
+    logging.basicConfig(level=config.log_level, handlers=(fh, ch))
     return _logger

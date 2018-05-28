@@ -1,21 +1,41 @@
 import config
 import cmd2 as cmd
-
+from IBOrders import showAllOrders, showWorkingOrders, showFilledOrders
+from IBPositions import showPositions
 
 class IBShell(cmd.Cmd):
     intro = "Now go and make some R's!"
     prompt = "ibsh:> "
 
-    show_cmds = ['positions', 'orders']
+    show_cmds = ['positions', 'orders', 'trades']
     show_orders_cmds = ['all', 'working', 'filled', 'canceled']
     order_cmds = ['add', 'del']
+    trade_cmds = ['all', 'open']
+
+    def __init__(self):
+        cmd.Cmd.__init__(self)
+        self.allow_cli_args = False
 
     def do_show(self, element):
         """group of 'show' commands"""
-        config.logger.debug('show %s' % element)
+        config.logger.debug('element: %s' % element)
 
-        if element and element in self.show_cmds:
-            pass
+        if 'orders' in element:
+            config.logger.debug('orders: %s' % element)
+            if element.endswith('orders'):
+                showWorkingOrders(config.session)
+            if element.endswith('all'):
+                showAllOrders(config.session)
+            if element.endswith('working'):
+                showWorkingOrders(config.session)
+            if element.endswith('filled'):
+                showFilledOrders(config.session)
+            if element.endswith('canceled'):
+                print('not yet implemented')
+
+        if 'positions' in element:
+            config.logger.debug('positions: %s' % element)
+            showPositions(config.session)
 
     def complete_show(self, text, line, begidx, endidx):
         # 'show orders' completion
@@ -45,8 +65,6 @@ class IBShell(cmd.Cmd):
         if not text:
             completions = self.order_cmds[:]
         else:
-            completions = [f
-                           for f in self.order_cmds
-                           if f.startswith(text)
-                           ]
+            completions = [f for f in self.order_cmds
+                           if f.startswith(text)]
         return completions
