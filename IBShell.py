@@ -2,6 +2,7 @@ import config
 import cmd2 as cmd
 from IBOrders import showAllOrders, showWorkingOrders, showFilledOrders
 from IBPositions import showPositions
+from IBTrades import showOpenTrades
 
 class IBShell(cmd.Cmd):
     intro = "Now go and make some R's!"
@@ -37,6 +38,10 @@ class IBShell(cmd.Cmd):
             config.logger.debug('positions: %s' % element)
             showPositions(config.session)
 
+        if 'trades' in element:
+            config.logger.debug('trades: %s' % element)
+            showOpenTrades(config.session)
+
     def complete_show(self, text, line, begidx, endidx):
         # 'show orders' completion
         if 'show orders' in line:
@@ -50,6 +55,15 @@ class IBShell(cmd.Cmd):
                 completions = [f for f in self.show_orders_cmds
                                if f.startswith(text)]
             return completions
+
+        if 'show positions' in line:
+            if line.endswith('positions '):
+                return False
+
+        if 'show trades' in line:
+            if line.endswith('trades '):
+                return False
+
 
         if not text:
             completions = self.show_cmds[:]
