@@ -1,12 +1,12 @@
-import  config
+from ib_insync import util
 
 def showAllOrders(_session):
-    print(_session.orders())
+    print(util.tree(_session.orders()))
 
 
 def showWorkingOrders(_session):
-    print(_session.openOrders())
+    print(util.tree(_session.openOrders()))
 
 
 def showFilledOrders(_session):
-    print(_session.fills())
+    print(util.tree(_session.fills()))

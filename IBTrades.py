@@ -1,2 +1,5 @@
+from ib_insync import util
+
+
 def showOpenTrades(_session):
-    print(_session.openTrades())
+    print(util.df(_session.openTrades()))

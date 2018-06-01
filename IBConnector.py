@@ -1,6 +1,7 @@
 import  config
 import ib_insync
 
+
 class IBConnector(ib_insync.IB):
     def start_session(self, ip='127.0.0.1', port=7497, client_id=1):
         config.logger.info('starting IB session')
