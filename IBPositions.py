@@ -1,21 +1,20 @@
 from ib_insync import util
-import pandas as pd
 from cmd2 import Cmd
 
+
 def showPositions(_session):
-    #print(util.tree(_session.portfolio()))
+    for position in util.tree(_session.portfolio()):
+        pdict = parsePosition(position)
 
-    for contract in util.tree(_session.portfolio()):
-        #print(contract)
-        # unrealized gain
-        urg = Cmd().colorize(str(contract[5]), posneg(contract[5]))
-        tick = contract[0]['Contract']['symbol']
-        pos = Cmd().colorize(str(contract[1]), posneg(contract[1]))
-        mval = contract[3]
-        avp = contract[4]
-        last = round(contract[2], 2)
+        urg = pdict['urg']
+        tick = pdict['tick']
+        size = pdict['size']
+        mval = pdict['mval']
+        avsp = pdict['avsp']
+        last = pdict['last']
 
-        print(f'{urg}\t{tick}\t{pos}\t{mval}\t{avp}\t{last}')
+        print(f'{urg}\t{tick}\t{size}\t{mval}\t{avsp}\t{last}')
+
 
 def posneg(_value):
     if _value > 0:
@@ -24,3 +23,26 @@ def posneg(_value):
         return 'red'
     else:
         return 'bold'
+
+
+def parsePosition(_position):
+    # unrealized gain
+    urg = Cmd().colorize(str(_position[5]), posneg(_position[5]))
+    tick = _position[0]['Contract']['symbol']
+    size = Cmd().colorize(str(_position[1]), posneg(_position[1]))
+    # market vale
+    mval = _position[3]
+    # average price per share
+    avsp = _position[4]
+    last = round(_position[2], 2)
+    Cmd().columnize()
+
+    position = {
+        'urg': urg,
+        'tick': tick,
+        'size': size,
+        'mval': mval,
+        'avsp': avsp,
+        'last': last
+    }
+    return position
