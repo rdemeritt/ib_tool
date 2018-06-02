@@ -4,6 +4,7 @@ from IBOrders import showAllOrders, showWorkingOrders, showFilledOrders
 from IBPositions import showPositions
 from IBTrades import showOpenTrades
 from IBAccounts import showAccountSummary, showAccountValues
+from TradeCalc import calcEntryStopShares
 
 class IBShell(cmd.Cmd):
     intro = "Now go and make some R's!"
@@ -19,12 +20,16 @@ class IBShell(cmd.Cmd):
         cmd.Cmd.__init__(self)
         self.allow_cli_args = False
 
+    def do_calc(self, element):
+        config.logger.debug(f'element: {element}')
+        print(calcEntryStopShares(element))
+
     def do_show(self, element):
         """group of 'show' commands"""
         config.logger.debug('element: %s' % element)
 
         if 'orders' in element:
-            config.logger.debug('orders: %s' % element)
+            config.logger.debug(f'orders: {element}')
             if element.endswith('orders'):
                 showWorkingOrders(config.session)
             if element.endswith('all'):
@@ -37,15 +42,15 @@ class IBShell(cmd.Cmd):
                 print('not yet implemented')
 
         if 'positions' in element:
-            config.logger.debug('positions: %s' % element)
+            config.logger.debug(f'positions: {element}')
             showPositions(config.session)
 
         if 'trades' in element:
-            config.logger.debug('trades: %s' % element)
+            config.logger.debug(f'trades: {element}')
             showOpenTrades(config.session)
 
         if 'accounts' in element:
-            config.logger.debug('accounts: %s' % element)
+            config.logger.debug(f'accounts: {element}')
             if element.endswith('accounts'):
                 showAccountSummary(config.session)
             if element.endswith('values'):
@@ -95,7 +100,7 @@ class IBShell(cmd.Cmd):
         return completions
 
     def do_order(self, action):
-        config.logger.debug('order %s' % action)
+        config.logger.debug(f'order: {action}')
 
     def complete_order(self, text, line, begidx, endidx):
         if not text:
