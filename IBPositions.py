@@ -13,7 +13,7 @@ def showPositions(_session):
         avsp = pdict['avsp']
         last = pdict['last']
 
-        print(f'{urg}\t{tick}\t{size}\t{mval}\t{avsp}\t{last}')
+        print(f'{urg:>7}\t{tick}\t{size:5}\t{mval:>12,}\t{avsp:>10,}\t{last:>10,}')
 
 
 def posneg(_value):
@@ -35,7 +35,6 @@ def parsePosition(_position):
     # average price per share
     avsp = _position[4]
     last = round(_position[2], 2)
-    Cmd().columnize()
 
     position = {
         'urg': urg,
@@ -46,3 +45,13 @@ def parsePosition(_position):
         'last': last
     }
     return position
+
+
+def showPNL(_session):
+    print(util.tree(_session.pnl()))
+
+
+# don't need this one... just keeping it around to remind myself
+# that positions() isn't any better than portfolio()
+def showPosPos(_session):
+    print(util.tree(_session.positions()))

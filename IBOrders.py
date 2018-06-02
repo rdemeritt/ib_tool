@@ -10,3 +10,6 @@ def showWorkingOrders(_session):
 
 def showFilledOrders(_session):
     print(util.tree(_session.fills()))
+
+def showExecutions(_session):
+    print(util.tree(_session.executions()))

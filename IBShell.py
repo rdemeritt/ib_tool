@@ -1,17 +1,18 @@
 import config
 import cmd2 as cmd
-from IBOrders import showAllOrders, showWorkingOrders, showFilledOrders
-from IBPositions import showPositions
-from IBTrades import showOpenTrades
+from IBOrders import showAllOrders, showWorkingOrders, showFilledOrders, showExecutions
+from IBPositions import showPositions, showPNL
+from IBTrades import showOpenTrades, showTrades
 from IBAccounts import showAccountSummary, showAccountValues
 from TradeCalc import calcEntryStopShares
+
 
 class IBShell(cmd.Cmd):
     intro = "Now go and make some R's!"
     prompt = "ibsh:> "
 
     show_cmds = ['positions', 'orders', 'trades', 'accounts']
-    show_orders_cmds = ['all', 'working', 'filled', 'canceled']
+    show_orders_cmds = ['all', 'working', 'filled', 'canceled', 'executions']
     show_accounts_cmds = ['values', 'summary']
     order_cmds = ['add', 'del']
     trade_cmds = ['all', 'open']
@@ -29,34 +30,40 @@ class IBShell(cmd.Cmd):
         config.logger.debug('element: %s' % element)
 
         if 'orders' in element:
-            config.logger.debug(f'orders: {element}')
             if element.endswith('orders'):
                 showWorkingOrders(config.session)
-            if element.endswith('all'):
+            elif element.endswith('all'):
                 showAllOrders(config.session)
-            if element.endswith('working'):
+            elif element.endswith('working'):
                 showWorkingOrders(config.session)
-            if element.endswith('filled'):
+            elif element.endswith('filled'):
                 showFilledOrders(config.session)
-            if element.endswith('canceled'):
+            elif element.endswith('canceled'):
                 print('not yet implemented')
+            elif element.endswith('executions'):
+                showExecutions(config.session)
 
-        if 'positions' in element:
-            config.logger.debug(f'positions: {element}')
-            showPositions(config.session)
+        elif 'positions' in element:
+            if element.endswith('positions'):
+                showPositions(config.session)
 
-        if 'trades' in element:
-            config.logger.debug(f'trades: {element}')
-            showOpenTrades(config.session)
+        elif 'trades' in element:
+            if element.endswith('all'):
+                showTrades(config.session)
+            elif element.endswith('open'):
+                showOpenTrades(config.session)
 
-        if 'accounts' in element:
-            config.logger.debug(f'accounts: {element}')
+        elif 'accounts' in element:
             if element.endswith('accounts'):
                 showAccountSummary(config.session)
-            if element.endswith('values'):
+            elif element.endswith('values'):
                 showAccountValues(config.session)
-            if element.endswith('summary'):
+            elif element.endswith('summary'):
                 showAccountSummary(config.session)
+
+        elif 'pnl' in element:
+            showPNL(config.session)
+
 
     def complete_show(self, text, line, begidx, endidx):
         # 'show orders' completion
