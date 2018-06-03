@@ -34,3 +34,8 @@ def _jsonize_it(_object):
 def append_json(_dict, _json):
     _json.append(_dict)
     return True
+
+
+def whoami(  ):
+    import sys
+    return sys._getframe(1).f_code.co_name
