@@ -156,3 +156,6 @@ class calc(IBShell):
     def __init__(self):
         IBShell.__init__(self)
 
+    def default(self, element):
+        config.logger.debug(f'{whoami()} element: {element}')
+        IBShell.do_calc(IBShell(), 'calc' + element)

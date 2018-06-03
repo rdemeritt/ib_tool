@@ -37,5 +37,5 @@ def append_json(_dict, _json):
 
 
 def whoami(  ):
-    import sys
-    return sys._getframe(1).f_code.co_name
+    from sys import _getframe
+    return _getframe(1).f_code.co_name
