@@ -25,11 +25,11 @@ class IBShell(cmd.Cmd):
 
     def do_calc(self, element):
         config.logger.debug(f'{whoami()} element: {element}')
-        if element.endswith(''):
+        if 'risk' in element:
+            print(calcEntryStopShares(element.split('risk')[-1]))
+        elif element.endswith(''):
             calc_cli = calc()
             calc_cli.cmdloop()
-        else:
-            print(calcEntryStopShares(element))
 
     def do_show(self, element):
         """group of 'show' commands"""
@@ -124,6 +124,11 @@ class IBShell(cmd.Cmd):
                            if f.startswith(text)]
         return completions
 
+    def do_jordan(self, element):
+        test_cli = test_shell()
+        test_cli.cmdloop()
+
+
 class orders(IBShell):
     intro = 'Manage IB Orders'
     prompt = '(orders):> '
@@ -149,6 +154,7 @@ class orders(IBShell):
                                if f.startswith(text)]
             return completions
 
+
 class calc(IBShell):
     intro = 'Trade Calculator'
     prompt = '(calc):>'
@@ -156,6 +162,25 @@ class calc(IBShell):
     def __init__(self):
         IBShell.__init__(self)
 
+    def do_risk(self, element):
+        config.logger.debug(f'{whoami()} element: {element}')
+        IBShell.do_calc(IBShell(), 'risk' + element)
+
+    def preparse(self, raw):
+        return raw
+
     def default(self, element):
         config.logger.debug(f'{whoami()} element: {element}')
         IBShell.do_calc(IBShell(), 'calc' + element)
+
+
+class test_shell(cmd.Cmd):
+    intro='Test shell'
+    prompt = '(test):>'
+
+    def __init__(self):
+        cmd.Cmd.__init__(self)
+        self.allow_cli_args = False
+
+    def do_print(self, arg):
+        print(arg)

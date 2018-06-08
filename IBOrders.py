@@ -1,4 +1,5 @@
 from ib_insync import util
+import ib_insync.ib
 import config
 from utilities import whoami
 
@@ -20,3 +21,6 @@ def showFilledOrders(_session):
 def showExecutions(_session):
     config.logger.debug(whoami())
     print(util.tree(_session.executions()))
+
+
+config.session

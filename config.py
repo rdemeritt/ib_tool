@@ -26,13 +26,6 @@ def init():
         log_level = getattr(logging, args.log_level.upper())
     logger = build_logger()
 
-    # # process our arguments
-    # if args.key:
-    #     pass
-    # # drop out if we don't have a way to setup session
-    # else:
-    #     logger.error('No key provided')
-    #     exit(1)
     ib_conn = IBConnector()
     session = ib_conn.start_session()
 
