@@ -13,7 +13,7 @@ def build_arg_parser():
 
 
 def init():
-    global session
+    global ib_session
     global start_time
     global logger
     global args
@@ -27,9 +27,9 @@ def init():
     logger = build_logger()
 
     ib_conn = IBConnector()
-    session = ib_conn.start_session()
+    ib_session = ib_conn.start_session()
 
-    if not session:
+    if not ib_session:
         exit(2)
 
 
@@ -38,4 +38,4 @@ start_time = None
 logger = None
 log_level = logging.WARN
 args = None
-session = None
+ib_session = None
